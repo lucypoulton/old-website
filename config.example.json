@@ -1,0 +1,15 @@
+{
+  "port": 8080,
+  "oidc": {
+    "issuerBaseURL": "https://idp.com",
+    "baseURL": "https://lucypoulton.net",
+    "clientID": "client-id",
+    "secret": "client-secret"
+  },
+  "mysql": {
+    "host": "localhost",
+    "user": "user",
+    "password": "password",
+    "database": "databasename"
+  }
+}
