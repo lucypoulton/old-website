@@ -39,6 +39,7 @@ require("./database").init(app).then(() => {
     // TODO - add routers here
     require("./controllers/index").init(app);
     require("./controllers/projects").init(app);
+    require("./controllers/mdedit").init(app);
 
     app.use(function (req, res, next) {
         next(createError(404));

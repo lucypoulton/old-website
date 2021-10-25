@@ -7,10 +7,17 @@ const fs = require("fs/promises");
 module.exports = {
     _pool: database.createPool(config.mysql),
 
+    _urlBlockedChars: /[^a-z0-9]+/g,
+
+    generateUrlName: function (name) {
+        return name.toLowerCase().replaceAll(this._urlBlockedChars, "-")
+    },
+
     init: async function (app) {
         try {
             await fs.mkdir("filestore");
-        } catch (_) {}
+        } catch (_) {
+        }
         const conn = await this._pool.getConnection();
         const files = (await fs.readdir("migrations")).filter(f => f.endsWith(".sql")).sort();
 
@@ -30,5 +37,30 @@ module.exports = {
         const [results] = await conn.execute("SELECT * FROM projects");
         conn.release();
         return results;
+    },
+
+    getProjectById: async function (urlName) {
+        const conn = await this._pool.getConnection();
+        const [results] = await conn.execute("SELECT * FROM projects WHERE project_name=?", [urlName]);
+        if (results.length === 0) {
+            conn.release();
+            return null;
+        }
+        const project = results[0];
+
+        const linksQuery = await conn.execute("SELECT * FROM project_links WHERE project=?", [project.id]);
+        project.links = linksQuery[0];
+        conn.release();
+        return project;
+    },
+
+    addProject: async function (project) {
+        const conn = await this._pool.getConnection();
+        const name = this.generateUrlName(project.project_name);
+        await conn.execute(
+            "INSERT INTO projects (project_name, display_name, description) VALUES (?, ?, ?)",
+            [name, project.project_name, project.description]);
+        conn.release();
+        return name;
     }
 }

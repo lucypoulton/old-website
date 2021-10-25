@@ -1,0 +1,26 @@
+#edit-container {
+    display: flex;
+    height: 100%;
+    margin: 1em;
+}
+
+#edit-container > * {
+    flex: 1
+}
+
+#edit-input {
+    width: 100%;
+    display: inline-block;
+    resize: none;
+    background-color: transparent;
+    color: white;
+    float: left;
+    border-radius: 5px;
+    font-family: "Roboto Mono", monospace;
+    outline: none;
+    overflow: auto;
+}
+
+#rendered {
+    text-align: center;
+}
