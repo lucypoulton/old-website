@@ -58,9 +58,23 @@ module.exports = {
         const conn = await this._pool.getConnection();
         const name = this.generateUrlName(project.project_name);
         await conn.execute(
-            "INSERT INTO projects (project_name, display_name, description) VALUES (?, ?, ?)",
-            [name, project.project_name, project.description]);
+            "INSERT INTO projects (project_name, display_name, description, longdesc) VALUES (?, ?, ?, ?)",
+            [name, project.project_name, project.description, project.longdesc]);
         conn.release();
         return name;
+    },
+
+    getStoredFileById: async function (fileId) {
+        const conn = await this._pool.getConnection();
+        const [results] = await conn.execute("SELECT * FROM stored_files WHERE id=?", [fileId]);
+        conn.release();
+
+        return results.length === 0 ? null : results[0];
+    },
+
+    setProjectDescription: async function (projectId, newDescription) {
+        const conn = await this._pool.getConnection();
+        await conn.execute("UPDATE projects SET longdesc=? WHERE id=?", [newDescription, projectId]);
+        conn.release();
     }
 }

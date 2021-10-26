@@ -17,20 +17,21 @@ app.set('view engine', 'ejs');
 
 // middleware
 app.use(logger("dev"));
-app.use(express.urlencoded({extended: false}));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
-app.use(formidable({
-    encoding: "utf-8",
-    multiples: true
-}))
-
 app.use(auth({
         ...config.oidc,
         authRequired: false,
         idpLogout: true,
+        errorOnRequiredAuth: true
     })
 );
+app.use(express.urlencoded({extended: false}));
+app.use(cookieParser());
+app.use(express.static('public'));
+app.use('/files', express.static('filestore'));
+app.use(formidable({
+    encoding: "utf-8",
+    multiples: true
+}))
 
 // mysql setup
 require("./database").init(app).then(() => {
@@ -53,7 +54,7 @@ require("./database").init(app).then(() => {
 
         // render the error page
         res.status(err.status || 500);
-        res.render('error');
+        res.render('error', {user: req.oidc.user});
     });
 
 

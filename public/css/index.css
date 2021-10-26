@@ -57,7 +57,7 @@ body {
 .links {
     margin-top: 1em;
 }
-.button {
+button, .button {
     color: var(--accent);
     text-decoration: none;
     background-color: #222;
@@ -68,9 +68,10 @@ body {
     display: inline-block;
     cursor: pointer;
     transition: opacity 0.1s;
+    border: none
 }
 
-.button:hover {
+button:hover, .button:hover {
     opacity: 90%;
 }
 

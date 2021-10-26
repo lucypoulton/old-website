@@ -1,25 +1,16 @@
-<form enctype="multipart/form-data" method="post">
+<form enctype="multipart/form-data" method="post" style="display: flex;flex-direction: column">
     <label>
         Project name
         <input type="text" maxlength="64" name="project_name">
     </label>
-    <% for (let col of ["one", "two"]) { %>
-        <label>
-            Colour <%= col %>
-            <select name="colour_<%= col %>">
-                <option value="0">Red</option>
-                <option value="1">Yellow</option>
-                <option value="2">Green</option>
-                <option value="3">Cyan</option>
-                <option value="4">Blue</option>
-                <option value="5">Purple</option>
-            </select>
-        </label>
-    <% } %>
     <label>
         Description
         <textarea style="resize: none" name="description"></textarea>
     </label>
 
+    <label>
+        Long description
+        <textarea style="resize: none" name="longdesc"></textarea>
+    </label>
     <input type="submit" value="Create">
 </form>

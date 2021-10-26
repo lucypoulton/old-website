@@ -10,6 +10,11 @@
 <div class="header">
     <span class="highlight">Lucy Poulton</span>
     <a href="/">Home</a><a href="/projects">Projects</a><a href="https://discord.lucypoulton.net">Discord</a>
+    <span style="float: right">
+        <% if (locals.user) { %>
+            <span><%= locals.user.username %></span> | <a href="/logout">Log out</a>
+        <% } %>
+    </span>
 </div>
 <div class="container">
     <%- body %>

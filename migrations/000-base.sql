@@ -2,13 +2,14 @@ CREATE TABLE IF NOT EXISTS projects (
     id            CHAR(36)        PRIMARY KEY DEFAULT UUID(),
     project_name  VARCHAR(64)     UNIQUE NOT NULL,
     display_name  VARCHAR(64),
-    description   TEXT            NOT NULL
+    description   TEXT            NOT NULL,
+    longdesc      TEXT            NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS project_links (
-    project       CHAR(36)    NOT NULL,
-    display_name  CHAR(36)    NOT NULL,
-    url           TEXT        NOT NULL,
+    project       CHAR(36)      NOT NULL,
+    display_name  VARCHAR(36)   NOT NULL,
+    url           TEXT          NOT NULL,
 
     CONSTRAINT fk_link_project FOREIGN KEY (project)
     REFERENCES projects(id)

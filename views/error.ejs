@@ -1,2 +1,4 @@
-<h2>Error <%=error.status %></h2>
+<h1><%= error.status %></h1>
+<h2><%= error.message %></h2>
+<button onclick="window.location='/'">Go Home</button>
 <pre><%= error.stack %></pre>

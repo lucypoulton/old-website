@@ -1,10 +1,16 @@
 <link rel="stylesheet" href="/css/edit.css">
 <h1>Editing <%= filename %></h1>
+<form method="post" enctype="multipart/form-data">
+    <button type="submit" class="button-inverted" value="Save">Save</button>
+    <button>Cancel</button>
 <div id="edit-container">
-    <textarea id="edit-input" cols="1" rows="1" wrap="hard"></textarea>
+    <textarea name="content" id="edit-input"><%= contents %></textarea>
     <div id="rendered"></div>
 </div>
+</form>
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.63.3/lib/codemirror.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.63.3/mode/markdown/markdown.js"></script>
 <script>
     document.getElementById("edit-input").addEventListener("input", ev =>
         document.getElementById("rendered").innerHTML = marked(ev.target.value))

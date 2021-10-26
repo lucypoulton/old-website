@@ -19,6 +19,7 @@
     font-family: "Roboto Mono", monospace;
     outline: none;
     overflow: auto;
+    height: calc(100vh - 14em);
 }
 
 #rendered {
