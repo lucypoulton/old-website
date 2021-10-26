@@ -72,6 +72,19 @@ module.exports = {
         return results.length === 0 ? null : results[0];
     },
 
+    getProjectUpdates: async function (projectId) {
+        const conn = await this._pool.getConnection();
+        const [updates] = await conn.execute("SELECT * FROM updates WHERE project=?", [projectId]);
+        const [files] = await conn.execute("SELECT stored_files.* FROM stored_files, updates WHERE updates.project='?'", [projectId]);
+        for (let file of files) {
+            let update = updates.find(upd => upd.id === file.update_id);
+            if (update == null) continue;
+            if (!update.files) update.files = [];
+            update.files.push(file);
+        }
+        return updates;
+    },
+
     setProjectDescription: async function (projectId, newDescription) {
         const conn = await this._pool.getConnection();
         await conn.execute("UPDATE projects SET longdesc=? WHERE id=?", [newDescription, projectId]);

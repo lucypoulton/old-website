@@ -1,16 +1,11 @@
-<% if (project === null) { %>
-    <!-- TODO a nice error message -->
-    <h1>Nothing found</h1>
-<% } else { %>
-    <h1><%= project.display_name %></h1>
-    <h3><%= project.description %></h3>
-    <div class="button button-inverted">Downloads</div>
-    <div class="links">
-        <% for (const link of project.links) { %>
-            <a class="button" href="<%= link.url %>"><%= link.display_name %></a>
-        <% } %>
-    </div>
-    <div>
-        <%- longdesc %>
-    </div>
-<% } %>
+<h1><%= project.display_name %></h1>
+<h3><%= project.description %></h3>
+<div class="button button-inverted">Downloads</div>
+<div class="links">
+    <% for (const link of project.links) { %>
+        <a class="button" href="<%= link.url %>"><%= link.display_name %></a>
+    <% } %>
+</div>
+<div>
+    <%- longdesc %>
+</div>
