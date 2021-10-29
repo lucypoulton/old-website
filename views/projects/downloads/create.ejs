@@ -1,0 +1,15 @@
+<form enctype="multipart/form-data" method="post" style="display: flex;flex-direction: column">
+    <label>
+        Version name
+        <input type="text" maxlength="64" name="version">
+    </label>
+    <label>
+        Description
+        <textarea style="resize: none" name="description"></textarea>
+    </label>
+
+    <label>Files
+        <input type="file" name="file[]" multiple>
+    </label>
+    <button>Create</button>
+</form>

@@ -22,6 +22,8 @@ module.exports = {
 
         app.get("/projects/:name", this.onGetProject);
         app.get("/projects/:name/downloads", this.onGetDownloads);
+        app.get("/projects/:name/downloads/create", authConstants.isAdmin, this.onGetDownloadsCreate);
+        app.post("/projects/:name/downloads/create", authConstants.isAdmin, this.onPostDownloadsCreate);
     },
 
     onGetProject: async function (req, res, next) {
@@ -56,10 +58,44 @@ module.exports = {
         }
         const updates = await req.app.database.getProjectUpdates(project.id)
 
-        next(res.render("projects/downloads", {
+        next(res.render("projects/downloads/index", {
             project: project,
             user: req.oidc.user,
             updates: updates
         }));
+    },
+
+    onGetDownloadsCreate: async function (req, res, next) {
+        const project = await req.app.database.getProjectById(req.params.name);
+        if (project === null) {
+            next(createError(404, "That project doesn't exist."));
+            return;
+        }
+        next(res.render("projects/downloads/create", {
+            user: req.oidc.user
+        }));
+    },
+
+    onPostDownloadsCreate: async function (req, res, next) {
+        const project = await req.app.database.getProjectById(req.params.name);
+        if (project === null) {
+            next(createError(404, "That project doesn't exist."));
+            return;
+        }
+
+        if (["version", "description"].find(f => typeof req.fields[f] === "undefined")) {
+            next(createError(400))
+        }
+
+        try {
+            const name = await req.app.database.addProjectUpdate(project.id, req.fields);
+            for (let file of req.files["file[]"]) {
+                file.name;
+                file.path
+            }
+            res.redirect(`/projects/${name}`);
+        } catch (ex) {
+            next(createError(500, ex));
+        }
     }
 }

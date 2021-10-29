@@ -1,6 +1,6 @@
 <h1><%= project.display_name %></h1>
 <h3><%= project.description %></h3>
-<div class="button button-inverted">Downloads</div>
+<div class="button button-inverted" onclick="window.location = '/projects/<%= project.project_name %>/downloads'">Downloads</div>
 <div class="links">
     <% for (const link of project.links) { %>
         <a class="button" href="<%= link.url %>"><%= link.display_name %></a>

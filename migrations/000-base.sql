@@ -33,7 +33,6 @@ CREATE TABLE IF NOT EXISTS stored_files (
     id            CHAR(36)    PRIMARY KEY DEFAULT UUID(),
     update_id     CHAR(36),
     original_name VARCHAR(128),
-    display_name  VARCHAR(36),
 
     CONSTRAINT fk_file_update FOREIGN KEY (update_id)
     REFERENCES updates(id)

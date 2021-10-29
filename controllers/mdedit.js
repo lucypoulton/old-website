@@ -20,7 +20,6 @@ module.exports = {
 
     postProjectEdit: async function (req, res) {
         const project = await req.app.database.getProjectById(req.params.name);
-        // TODO - authenticate!
 
         if (typeof req.fields.content === "undefined") res.status(400);
         else if (project == null) res.status(404);
