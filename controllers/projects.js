@@ -92,7 +92,7 @@ module.exports = {
             const updateId = await req.app.database.addProjectUpdate(project.id, req.fields);
             for (let file of req.files["file[]"]) {
                 const id = await req.app.database.generateIdForFile(updateId, file.name);
-                await fs.copyFile(file.path, `${__filename}/../filestore/${id}`);
+                await fs.copyFile(file.path, `${__dirname}/../filestore/${id}`);
             }
             res.redirect(`/projects/${req.params.name}`);
         } catch (ex) {
