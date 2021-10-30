@@ -1,2 +1,27 @@
-<h1>Index</h1>
-<p>TODO: put a cool index page here!</p>
+<h1>Lucy Poulton</h1>
+<h3>
+    <a class="button" href="https://github.com/lucypoulton">Github</a>
+    <a class="button" href="https://discord.gg/8GU6dsRss3">Discord</a>
+    <a class="button" onclick="alert('lucy@<this domain>')">Email</a>
+
+</h3>
+<p>Hi! My name's Lucy.
+I quickly threw this site together after an incident with my last VPS provider. There'll be something here soon, I promise!</p>
+<h2>Projects</h2>
+<% if (projects.length === 0) { %>
+    There's nothing here at the moment. :(
+<% } else { %>
+    <div class="flowbox">
+        <% for (let project of projects) { %>
+            <div onclick="window.location='/projects/<%= project.project_name %>'">
+                <h2><%= project.display_name %></h2>
+                <p><%= project.description %></p>
+            </div>
+        <% } %>
+    </div>
+<% } %>
+<div>
+    <% if (locals.user) { %>
+        <button onclick="window.location='/projects/create'">New</button>
+    <% } %>
+</div>

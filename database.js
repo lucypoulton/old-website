@@ -1,5 +1,6 @@
 // Exports an async method responsible for setting up MySQL.
 
+const uuid = require("uuid");
 const database = require("mysql2/promise");
 const config = require("./config.json");
 const fs = require("fs/promises");
@@ -57,9 +58,10 @@ module.exports = {
     async addProject(project) {
         const conn = await this._pool.getConnection();
         const name = this.generateUrlName(project.project_name);
+        const id = uuid.v4();
         await conn.execute(
-            "INSERT INTO projects (project_name, display_name, description, longdesc) VALUES (?, ?, ?, ?)",
-            [name, project.project_name, project.description, project.longdesc]);
+            "INSERT INTO projects (id, project_name, display_name, description, longdesc) VALUES (?, ?, ?, ?, ?)",
+            [id, name, project.project_name, project.description, project.longdesc]);
         conn.release();
         return name;
     },
@@ -75,7 +77,7 @@ module.exports = {
     async getProjectUpdates(projectId) {
         const conn = await this._pool.getConnection();
         const [updates] = await conn.execute("SELECT * FROM updates WHERE project=?", [projectId]);
-        const [files] = await conn.execute("SELECT stored_files.* FROM stored_files, updates WHERE updates.project='?'", [projectId]);
+        const [files] = await conn.execute("SELECT stored_files.* FROM stored_files, updates WHERE updates.project=?", [projectId]);
         for (let file of files) {
             let update = updates.find(upd => upd.id === file.update_id);
             if (update == null) continue;
@@ -93,16 +95,18 @@ module.exports = {
 
     async addProjectUpdate(projectId, update) {
         const conn = await this._pool.getConnection();
-        await conn.execute("INSERT INTO updates (version, project, description) VALUES (?, ?, ?)",
-            [update.version, projectId, update.description]);
+        const id = uuid.v4();
+        await conn.execute("INSERT INTO updates (id, version, project, description) VALUES (?, ?, ?, ?)",
+            [id, update.version, projectId, update.description]);
         conn.release();
+        return id;
     },
 
-    async generateIdForFile(projectId, fileName) {
+    async generateIdForFile(updateId, fileName) {
+        const id = uuid.v4();
         const conn = await this._pool.getConnection();
-        await conn.execute("INSERT INTO stored_files (update_id, originalName) VALUES (?, ?)",
-            [projectId, fileName]);
-        const [id] = await conn.execute("SELECT LAST_INSERT_ID();");
+        await conn.execute("INSERT INTO stored_files (id, update_id, original_name) VALUES (?, ?, ?)",
+            [id, updateId, fileName]);
         conn.release();
         return id;
     }

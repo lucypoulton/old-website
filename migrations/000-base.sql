@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS projects (
-    id            CHAR(36)        PRIMARY KEY DEFAULT UUID(),
+    id            CHAR(36)        PRIMARY KEY,
     project_name  VARCHAR(64)     UNIQUE NOT NULL,
     display_name  VARCHAR(64),
     description   TEXT            NOT NULL,
@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS project_links (
 );
 
 CREATE TABLE IF NOT EXISTS updates (
-    id            CHAR(36)    PRIMARY KEY DEFAULT UUID(),
+    id            CHAR(36)    PRIMARY KEY,
     version       VARCHAR(64) NOT NULL,
     project       CHAR(36)    NOT NULL,
     description   TEXT        NOT NULL,
@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS updates (
 );
 
 CREATE TABLE IF NOT EXISTS stored_files (
-    id            CHAR(36)    PRIMARY KEY DEFAULT UUID(),
+    id            CHAR(36)    PRIMARY KEY,
     update_id     CHAR(36),
     original_name VARCHAR(128),
 

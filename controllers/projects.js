@@ -1,3 +1,4 @@
+const fs = require("fs/promises");
 const marked = require("marked");
 const createDOMPurify = require('dompurify');
 const {JSDOM} = require('jsdom');
@@ -56,7 +57,7 @@ module.exports = {
             next(createError(404, "That project doesn't exist."));
             return;
         }
-        const updates = await req.app.database.getProjectUpdates(project.id)
+        const updates = await req.app.database.getProjectUpdates(project.id);
 
         next(res.render("projects/downloads/index", {
             project: project,
@@ -88,12 +89,12 @@ module.exports = {
         }
 
         try {
-            const name = await req.app.database.addProjectUpdate(project.id, req.fields);
+            const updateId = await req.app.database.addProjectUpdate(project.id, req.fields);
             for (let file of req.files["file[]"]) {
-                file.name;
-                file.path
+                const id = await req.app.database.generateIdForFile(updateId, file.name);
+                await fs.copyFile(file.path, `${process.env.PWD}/filestore/${id}`);
             }
-            res.redirect(`/projects/${name}`);
+            res.redirect(`/projects/${req.params.name}`);
         } catch (ex) {
             next(createError(500, ex));
         }
