@@ -1,7 +1,7 @@
 <h1>Download <%= project.display_name %></h1>
 <% for (let update of updates) { %>
     <h2><%= update.version %></h2>
-    <p><%= project.description %></p>
+    <p><%- project.descParsed %></p>
     <% for (let file of update.files) { %>
         <a class="button" download="<%= file.original_name %>" href="/files/<%= file.id %>"><%= file.original_name %></a>
 <% }

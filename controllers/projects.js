@@ -59,6 +59,10 @@ module.exports = {
         }
         const updates = await req.app.database.getProjectUpdates(project.id);
 
+        for (let update of updates) {
+            update.descParsed = DOMPurify.sanitize(marked(update.description))
+        }
+
         next(res.render("projects/downloads/index", {
             project: project,
             user: req.oidc.user,
