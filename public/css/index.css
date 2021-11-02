@@ -80,3 +80,7 @@ button:hover, .button:hover {
     background-color: var(--accent);
     color: #222;
 }
+
+a {
+    color: inherit;
+}
